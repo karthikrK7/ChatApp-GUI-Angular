@@ -2,7 +2,7 @@
   <!-- DIRECT CHAT -->
   <div class="card direct-chat direct-chat-warning direct-chat-contacts-open">
     <div class="card-header">
-      <h3 class="card-title">welcome {{this.chatUsername}}</h3>
+      <h3 class="card-title">{{this.chatUsername}}</h3>
 
       <div class="card-tools">
         <span title="3 New Messages" class="badge badge-warning">3</span>
@@ -22,12 +22,13 @@
       <!-- Conversations are loaded here -->
       <div class="direct-chat-messages">
         <div *ngFor="let convo of conversations"
-          [ngClass]="true? 'direct-chat-msg right':'direct-chat-msg'">
+          [ngClass]="this.convo.SentBy == this.currentUser_id ? 'direct-chat-msg right':'direct-chat-msg'">
           <div class="direct-chat-infos clearfix">
-            <span [ngClass]="true ? 'float-right' : 'float-left'"
-              class="direct-chat-name"> {{this.convo.SentByName}}</span>
-            <span [ngClass]="this.convo.SentBy === this.currentUser_chatid? 'float-left' : 'float-right'"
-              class="direct-chat-timestamp float-right">{{this.convo.createdTime|date:'medium'}}</span>
+            <span [ngClass]="this.convo.SentBy == this.currentUser_id ? 'float-right' : 'float-left'"
+              class="direct-chat-name">{{this.convo.SentByName}}</span>
+            <span
+              [ngClass]="{ 'float-left' : this.convo.SentBy === this.currentUser_id ,
+            'float-right' : this.convo.SentBy != this.currentUser_id }">{{this.convo.createdTime|date:'medium'}}</span>
           </div>
           <img class="direct-chat-img" src="{{this.dp_path}}" alt="message user image">
           <div class="direct-chat-text">
@@ -39,10 +40,11 @@
       <!-- Contacts are loaded here -->
       <div class="direct-chat-contacts">
         <ul class="contacts-list">
-          <li *ngFor="let chats of chatList">{{chats.chatId}}
+          <li *ngFor="let chats of chatList">
             <div>
               <img class="contacts-list-img" src="{{this.dp_path}}" alt="User Avatar">
-              <div class="contacts-list-info" (click)="getConvo(chats)">
+              <div class="contacts-list-info chatreceiver_{{this.chats.chat_receiver_id}}" (click)="getConvo(chats)"
+                id="{{this.chats.chatId}}">
                 <span class="contacts-list-name">
                   {{this.chats.name}}
                   <small class="contacts-list-date float-right">{{this.chats.time | date:'medium'}}</small>
@@ -50,7 +52,7 @@
                 <span class="contacts-list-msg">{{this.chats.lastsentmsg}}</span>
               </div>
             </div>
-          
+
           </li>
         </ul>
         <!-- /.contacts-list -->
