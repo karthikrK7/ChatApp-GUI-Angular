@@ -27,7 +27,7 @@ export class MainContentComponent implements OnInit {
     this.currentUserId = sessionStorage.getItem('user_id');
   }
 
-  receiveMessage($event) {
+  receiveMessage($event: any) {
     this.receiver_obj = $event;
     this.chatbox.receiver_Obj = this.receiver_obj;
     this.chatbox.chatUsername = this.receiver_obj.username;

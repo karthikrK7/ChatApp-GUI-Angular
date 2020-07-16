@@ -17,7 +17,7 @@ export class ChatboxComponent implements OnInit {
   chatList: any;
   conversations: any;
   chatUsername: any;
-  currentUser_chatid: string;
+  currentUser_id: string;
   access_token: any;
   dp_path: string;
   chatBoxinput: any;
@@ -39,6 +39,7 @@ export class ChatboxComponent implements OnInit {
   ngOnInit() {
     this.access_token = sessionStorage.getItem('access_token');
     this.dp_path = "assets/img/" + sessionStorage.getItem('dp_path');
+    this.currentUser_id = sessionStorage.getItem('user_id');
     this.LoadData();
   }
 
@@ -52,22 +53,25 @@ export class ChatboxComponent implements OnInit {
       console.log("chat list loaded");
       this.chatList = response;
     });
+    $(".direct-chat").removeClass("direct-chat-contacts-open");
   }
 
   getConvo(chat_id) {
-    this.currentUser_chatid=chat_id.chatId;
+   // this.currentUser_chatid=chat_id.chatId;
     this.chatAppService.getConversation(this.access_token, chat_id).subscribe(
       response => {
         this.conversations = response;
         this.receiver = this.conversations.Conversation.Receiver;
         this.conversations = this.conversations.Conversation.chats;
         $(".direct-chat").removeClass("direct-chat-contacts-open");
+        
       }
     );
+    $(".card-title").html(chat_id.name);
   }
   sendmsg() {
     this.payload.text = this.chatBoxinput;
-    this.payload.chat_id = '4';
+    this.payload.chat_id = '6';
     this.stompClient.send('/app/send/message', {}, JSON.stringify(this.payload));
   }
 

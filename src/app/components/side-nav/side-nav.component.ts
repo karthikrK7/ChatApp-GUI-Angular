@@ -39,8 +39,12 @@ export class SideNavComponent implements OnInit {
   }
 
   createChat(with_user_Id) {
+    
     this.chatAppService.setReceiverObj(with_user_Id);
     this.selected_receiver = with_user_Id;
+
+    //alert($(".chatreceiver_"+with_user_Id.uid).attr("id"));
     this.messageEvent.emit(this.selected_receiver);
+    $(".contacts-list-info").click();
   }
 }
