@@ -1,0 +1,33 @@
+<form class="theme-dark align-self-center login-form" id="login">
+    <div class="">
+        <div class="" style="flex: 1 1 auto;">
+            <div class="">
+                <div class="text-align-center">Welcome back!</div>
+                <div class="text-align-center">We're so excited to see you again!</div>
+                <div class="col-xs-12 col-sm-12">
+                    <div class="">
+                        <h5 class="">Email</h5>
+                        <div class=""><input class="col-xs-12 col-sm-12 padding-zero" name="email" type="email"
+                                placeholder="" aria-label="Email" autocomplete="off" maxlength="999"
+                                spellcheck="false" value="" [(ngModel)]="this.payload.username"></div>
+                    </div>
+                    <div>
+                        <h5 class="">Password
+                        </h5>
+                        <div class=""><input class="col-xs-12 col-sm-12 padding-zero" name="password" type="password" placeholder=""
+                                aria-label="Password" autocomplete="off" maxlength="999" spellcheck="false"
+                                value="" [(ngModel)]="this.payload.password"></div>
+                    </div>
+                    <div class="margin-top col-xs-12 col-sm-12 padding-zero">
+                            <button type="button" class="col-xs-12 col-sm-5">Forgot your password?
+                            </button>
+                            <button type="submit" class="padding-left col-xs-12 col-sm-2 margin-top" (click)="login()">Login
+                            </button>
+                    </div>
+                </div>
+            </div>
+            <div class="margin-top col-xs-12 col-sm-12"><label> Need an account?</label></div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,77 @@
+<div class="col-xs-12 col-sm-12 mt-2">
+  <!-- DIRECT CHAT -->
+  <div class="card direct-chat direct-chat-warning direct-chat-contacts-open">
+    <div class="card-header">
+      <h3 class="card-title">welcome {{this.chatUsername}}</h3>
+
+      <div class="card-tools">
+        <span title="3 New Messages" class="badge badge-warning">3</span>
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
+          <i class="fas fa-comments"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <!-- Conversations are loaded here -->
+      <div class="direct-chat-messages">
+        <div *ngFor="let convo of conversations"
+          [ngClass]="true? 'direct-chat-msg right':'direct-chat-msg'">
+          <div class="direct-chat-infos clearfix">
+            <span [ngClass]="true ? 'float-right' : 'float-left'"
+              class="direct-chat-name"> {{this.convo.SentByName}}</span>
+            <span [ngClass]="this.convo.SentBy === this.currentUser_chatid? 'float-left' : 'float-right'"
+              class="direct-chat-timestamp float-right">{{this.convo.createdTime|date:'medium'}}</span>
+          </div>
+          <img class="direct-chat-img" src="{{this.dp_path}}" alt="message user image">
+          <div class="direct-chat-text">
+            {{this.convo.Message}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacts are loaded here -->
+      <div class="direct-chat-contacts">
+        <ul class="contacts-list">
+          <li *ngFor="let chats of chatList">{{chats.chatId}}
+            <div>
+              <img class="contacts-list-img" src="{{this.dp_path}}" alt="User Avatar">
+              <div class="contacts-list-info" (click)="getConvo(chats)">
+                <span class="contacts-list-name">
+                  {{this.chats.name}}
+                  <small class="contacts-list-date float-right">{{this.chats.time | date:'medium'}}</small>
+                </span>
+                <span class="contacts-list-msg">{{this.chats.lastsentmsg}}</span>
+              </div>
+            </div>
+          
+          </li>
+        </ul>
+        <!-- /.contacts-list -->
+      </div>
+      <!-- /.direct-chat-pane -->
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      <form action="#" method="post">
+        <div class="input-group">
+          <input type="text" name="message" placeholder="Type Message ..." class="form-control"
+            [(ngModel)]="this.chatBoxinput" />
+          <span class="input-group-append">
+            <span class="input-group-text"></span>
+
+            <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
+          </span>
+        </div>
+      </form>
+    </div>
+    <!-- /.card-footer-->
+  </div>
+  <!--/.direct-chat -->
+</div>

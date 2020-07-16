@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+.height_100{
+    height:100vh;
+}
+.overflow-x-hidden{
+    overflow-x: hidden;
+}
+.main-footer{
+    position: fixed;
+    top: 92%;
+    width: 100%;
+}
