@@ -20,7 +20,10 @@
     <!-- /.card-header -->
     <div class="card-body">
       <!-- Conversations are loaded here -->
-      <div class="direct-chat-messages">
+      <div id="preloader" class="hide" >
+        <div id="loader"></div>
+      </div>
+      <div class="direct-chat-messages height_75">
         <div *ngFor="let convo of conversations"
           [ngClass]="this.convo.SentBy == this.currentUser_id ? 'direct-chat-msg right':'direct-chat-msg'">
           <div class="direct-chat-infos clearfix">
