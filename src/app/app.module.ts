@@ -12,6 +12,8 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ContactsComponent } from './components/contacts/contacts.component';
+//import { ChatvideoComponent } from './chatvideo/chatvideo.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     MainContentComponent,
     SideNavComponent,
     LoginComponent,
+    ContactsComponent,
+    //ChatvideoComponent,
   ],
   imports: [
     BrowserModule,

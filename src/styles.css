@@ -13,7 +13,9 @@
     top: 92%;
     width: 100%;
 }
-
+.subContent{
+    display:none;
+}
 #preloader {
     position: fixed;
     top: 0;

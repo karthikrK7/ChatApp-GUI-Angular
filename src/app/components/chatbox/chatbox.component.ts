@@ -5,12 +5,14 @@ import { Router } from '@angular/router';
 import { appConfig } from 'src/app/utils/app-config';
 declare var SockJS;
 declare var Stomp;
+//var Rtcpeer = require('rtcpeerconnection');
 
 @Component({
   selector: 'app-chatbox',
   templateUrl: './chatbox.component.html',
   styleUrls: ['./chatbox.component.css']
 })
+
 export class ChatboxComponent implements OnInit {
   message: any;
   participantsList: any;
@@ -29,9 +31,18 @@ export class ChatboxComponent implements OnInit {
     text: this.chatBoxinput, sender_id: '', receiver_id: '',
     chat_id: '', msg_Type: '', groupChatId: '', singleChatId: ''
   };
+
   constructor(private chatAppService: ChatappService, private commonUtils: CommonutilsService, private router: Router) {
     this.initializeWebSocketConnection();
     this.currentUser_id = sessionStorage.getItem('user_id');
+    var mediaConstraints = {
+      audio: true,            // We want an audio track
+      video: {
+        aspectRatio: {
+          ideal: 1.333333     // 3:2 aspect is preferred
+        }
+      }
+    };
   }
 
   public stompClient;
@@ -59,7 +70,6 @@ export class ChatboxComponent implements OnInit {
 
   getConvo(chat_id) {
     // this.currentUser_chatid=chat_id.chatId;
-    
     this.preloader();
     this.chatAppService.getConversation(this.access_token, chat_id).subscribe(
       response => {
@@ -67,21 +77,19 @@ export class ChatboxComponent implements OnInit {
         this.receiver = this.conversations.Conversation.Receiver;
         this.conversations = this.conversations.Conversation.chats;
         $(".direct-chat").removeClass("direct-chat-contacts-open");
-        
-      }
-    );
+      });
     $(".card-title").html(chat_id.name);
     this.receiver = chat_id;
     this.payload.chat_id = chat_id.chatId;
-    
     setTimeout(this.scrollerheight, 50);
   }
 
-  
+
   sendmsg() {
     console.log(this.payload)
     this.payload.text = this.chatBoxinput;
     this.stompClient.send('/app/send/message', {}, JSON.stringify(this.payload));
+    this.chatBoxinput = "";
   }
 
   //websocket Injection
@@ -115,9 +123,8 @@ export class ChatboxComponent implements OnInit {
           //chatthread += '<span [ngClass]="' + resultJSON.SentBy + ' == ' + sessionStorage.getItem('user_id')  + ' ? \'float-right\' : \'float-left\'" class="direct-chat-name">' + resultJSON.SentByName + '</span>';
           chatthread += '<span';
           var dt = resultJSON.createdTime;
-          const options = {  year: 'numeric', month: 'short', day: 'numeric'};
-
-          chatthread += ' class="' + spandiv2 + '">'+new Date(dt).toLocaleDateString('en-IN',options)+'</span>';
+          const options = { year: 'numeric', month: 'short', day: 'numeric' };
+          chatthread += ' class="' + spandiv2 + '">' + new Date(dt).toLocaleDateString('en-IN', options) + '</span>';
           //chatthread += '[ngClass]="{ \'float-left\' : ' + resultJSON.SentBy + ' == ' + sessionStorage.getItem('user_id')  + ' ,\'float-right\' : ' + resultJSON.SentBy + ' != ' + sessionStorage.getItem('user_id')  + ' }">{{' + resultJSON.createdTime + '|date:\'medium\'}}</span>';
           chatthread += '</div>';
           chatthread += '<img class="direct-chat-img" src="' + this.dp_path + '" alt="message user image">';
@@ -132,15 +139,33 @@ export class ChatboxComponent implements OnInit {
     });
   }
 
-  scrollerheight(){
+  scrollerheight() {
     $(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
   }
-  preloader(){
-    $("#preloader").attr("class","show");
-   var value = function(){
-      $("#preloader").attr("class","hide")
+  preloader() {
+    $("#preloader").attr("class", "show");
+    var value = function () {
+      $("#preloader").attr("class", "hide")
     }
     setTimeout(value, 100);
   }
 
+  connect() {
+    var serverUrl;
+    var scheme = "ws";
+
+    // If this is an HTTPS connection, we have to use a secure WebSocket
+    // connection too, so add another "s" to the scheme.
+
+    if (document.location.protocol === "https:") {
+      scheme += "s";
+    }
+    serverUrl = scheme + "://localhost:8080/socket";
+
+    console.log(`Connecting to server: ${serverUrl}`);
+    const connection = new WebSocket(serverUrl, "json");
+    connection.onopen = function(evt) {
+      alert('connected');
+    };
+  }
 }

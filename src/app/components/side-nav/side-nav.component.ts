@@ -47,4 +47,16 @@ export class SideNavComponent implements OnInit {
     this.messageEvent.emit(this.selected_receiver);
     $(".contacts-list-info").click();
   }
+  navtabclicks(event){
+    var currentTarget = $(event)[0].currentTarget ;
+    $(".subContent").removeClass("show");
+    if($(currentTarget).hasClass("contacts")){
+      $("#contacts-panel").addClass("show");
+      
+    }else if($(currentTarget).hasClass("users")){
+      $("#chatbox-panel").addClass("show");
+    }
+  
+  }
+
 }

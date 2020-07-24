@@ -6,11 +6,17 @@
 
       <div class="card-tools">
         <span title="3 New Messages" class="badge badge-warning">3</span>
-        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
           <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
+        </button> -->
+        <!-- <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
           <i class="fas fa-comments"></i>
+        </button> -->
+        <button type="button" class="btn btn-tool" title="Phone call">
+          <i class="fa fa-phone" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-tool" title="Video call" (click)="connect();">
+          <i class="fas fa-video" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove">
           <i class="fas fa-times"></i>
@@ -41,7 +47,7 @@
       </div>
 
       <!-- Contacts are loaded here -->
-      <div class="direct-chat-contacts">
+      <div class="direct-chat-contacts height_75">
         <ul class="contacts-list">
           <li *ngFor="let chats of chatList">
             <div>
@@ -71,7 +77,7 @@
           <span class="input-group-append">
             <span class="input-group-text"></span>
 
-            <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
+            <button type="button" class="btn btn-warning" (click)="sendmsg()" >Send</button>
           </span>
         </div>
       </form>
@@ -80,3 +86,4 @@
   </div>
   <!--/.direct-chat -->
 </div>
+
