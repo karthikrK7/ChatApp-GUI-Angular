@@ -33,6 +33,7 @@ export class MainContentComponent implements OnInit {
     this.chatbox.chatUsername = this.receiver_obj.username;
     this.chatbox.payload.sender_id = this.currentUserId;
     this.chatbox.payload.receiver_id = this.receiver_obj.uid;
+    this.chatbox.payload.chat_id = $(".chatreceiver_"+this.receiver_obj.uid).attr("id")
     console.log(this.receiver_obj);
   }
 

@@ -17,6 +17,7 @@ export class SideNavComponent implements OnInit {
   currentUser_id: any;
   selected_receiver: any;
   @Output() messageEvent = new EventEmitter<any>();
+  @Output() sidenavEmitter = new EventEmitter<any>();
   
   constructor(private commUtils: CommonutilsService, private domSanitizer: DomSanitizer,
     private chatAppService: ChatappService) {
@@ -40,7 +41,7 @@ export class SideNavComponent implements OnInit {
 
   createChat(with_user_Id) {
     
-    this.chatAppService.setReceiverObj(with_user_Id);
+    //this.chatAppService.setReceiverObj(with_user_Id);
     this.selected_receiver = with_user_Id;
 
     //alert($(".chatreceiver_"+with_user_Id.uid).attr("id"));
@@ -49,12 +50,15 @@ export class SideNavComponent implements OnInit {
   }
   navtabclicks(event){
     var currentTarget = $(event)[0].currentTarget ;
+    this.sidenavEmitter.emit(currentTarget);
     $(".subContent").removeClass("show");
     if($(currentTarget).hasClass("contacts")){
       $("#contacts-panel").addClass("show");
       
     }else if($(currentTarget).hasClass("users")){
       $("#chatbox-panel").addClass("show");
+    }else if($(currentTarget).hasClass("files")){
+      $("#filebox-panel").addClass("show");
     }
   
   }

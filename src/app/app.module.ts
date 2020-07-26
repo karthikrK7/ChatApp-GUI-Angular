@@ -13,7 +13,9 @@ import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContactsComponent } from './components/contacts/contacts.component';
+import { FileboxComponent } from './components/filebox/filebox.component';
 //import { ChatvideoComponent } from './chatvideo/chatvideo.component';
+import * as $ from "jquery";
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
     SideNavComponent,
     LoginComponent,
     ContactsComponent,
+    FileboxComponent,
     //ChatvideoComponent,
   ],
   imports: [

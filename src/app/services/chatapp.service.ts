@@ -22,7 +22,7 @@ export class ChatappService {
   }
 
   getConversation(token: any, chat_id) {
-    return this.http.post(appConfig.apiUrl + '/webapi/getConversation?+&access_token=' + token + '&chatId=' + chat_id.chatId, "");
+    return this.http.post(appConfig.apiUrl + '/webapi/getConversation?+&access_token=' + token + '&chatId=' + chat_id, "");
   }
 
   setReceiverObj(Obj: any) {

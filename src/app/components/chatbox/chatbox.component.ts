@@ -79,8 +79,8 @@ export class ChatboxComponent implements OnInit {
         $(".direct-chat").removeClass("direct-chat-contacts-open");
       });
     $(".card-title").html(chat_id.name);
-    this.receiver = chat_id;
-    this.payload.chat_id = chat_id.chatId;
+    this.receiver = chat_id;  //copying  chat_id to receiver
+    this.payload.chat_id = chat_id; // setting the chat id in payload for send msg();
     setTimeout(this.scrollerheight, 50);
   }
 
@@ -127,7 +127,7 @@ export class ChatboxComponent implements OnInit {
           chatthread += ' class="' + spandiv2 + '">' + new Date(dt).toLocaleDateString('en-IN', options) + '</span>';
           //chatthread += '[ngClass]="{ \'float-left\' : ' + resultJSON.SentBy + ' == ' + sessionStorage.getItem('user_id')  + ' ,\'float-right\' : ' + resultJSON.SentBy + ' != ' + sessionStorage.getItem('user_id')  + ' }">{{' + resultJSON.createdTime + '|date:\'medium\'}}</span>';
           chatthread += '</div>';
-          chatthread += '<img class="direct-chat-img" src="' + this.dp_path + '" alt="message user image">';
+          chatthread += '<img class="direct-chat-img" src="assets/img/' + sessionStorage.getItem('dp_path') +'" alt="message user image">';
           chatthread += '<div class="direct-chat-text">';
           chatthread += resultJSON.Message;
           chatthread += '</div>';

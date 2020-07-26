@@ -52,7 +52,7 @@
           <li *ngFor="let chats of chatList">
             <div>
               <img class="contacts-list-img" src="{{this.dp_path}}" alt="User Avatar">
-              <div class="contacts-list-info chatreceiver_{{this.chats.chat_receiver_id}}" (click)="getConvo(chats)"
+              <div class="contacts-list-info chatreceiver_{{this.chats.chat_receiver_id}}" (click)="getConvo(chats.chatId)"
                 id="{{this.chats.chatId}}">
                 <span class="contacts-list-name">
                   {{this.chats.name}}
