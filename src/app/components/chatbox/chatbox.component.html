@@ -2,7 +2,8 @@
   <!-- DIRECT CHAT -->
   <div class="card direct-chat direct-chat-warning direct-chat-contacts-open">
     <div class="card-header">
-      <h3 class="card-title">{{this.chatUsername}}</h3>
+      <i class="fa fa-comments card-comment-i"></i>
+      <h3 class="card-title">Chat</h3>
 
       <div class="card-tools">
         <span title="3 New Messages" class="badge badge-warning">3</span>
@@ -15,7 +16,8 @@
         <button type="button" class="btn btn-tool" title="Phone call">
           <i class="fa fa-phone" aria-hidden="true"></i>
         </button>
-        <button type="button" class="btn btn-tool" title="Video call" (click)="connect();">
+        <button type="button" class="btn btn-tool" title="Video call" id="callvideo" data-toggle="modal"
+          data-target="#modal-default" (click)="start();">
           <i class="fas fa-video" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove">
@@ -26,23 +28,56 @@
     <!-- /.card-header -->
     <div class="card-body">
       <!-- Conversations are loaded here -->
-      <div id="preloader" class="hide" >
+      <div id="preloader" class="hide">
         <div id="loader"></div>
       </div>
       <div class="direct-chat-messages height_75">
-        <div *ngFor="let convo of conversations"
+        <!-- <div *ngFor="let convo of conversations"
           [ngClass]="this.convo.SentBy == this.currentUser_id ? 'direct-chat-msg right':'direct-chat-msg'">
           <div class="direct-chat-infos clearfix">
             <span [ngClass]="this.convo.SentBy == this.currentUser_id ? 'float-right' : 'float-left'"
               class="direct-chat-name">{{this.convo.SentByName}}</span>
-            <span
-              [ngClass]="{ 'float-left' : this.convo.SentBy === this.currentUser_id ,
+            <span [ngClass]="{ 'float-left' : this.convo.SentBy === this.currentUser_id ,
             'float-right' : this.convo.SentBy != this.currentUser_id }">{{this.convo.createdTime|date:'medium'}}</span>
           </div>
           <img class="direct-chat-img" src="{{this.dp_path}}" alt="message user image">
           <div class="direct-chat-text">
             {{this.convo.Message}}
           </div>
+        </div> -->
+
+
+
+        <div class="box-body chat" id="chat-box" *ngFor="let convo of conversations">
+          <!-- chat item -->
+          <div class="item">
+            <img src="{{this.dp_path}}" alt="user image" class="online">
+
+            <p class="message">
+              <a href="javascript:void(0)" class="name">
+                <small class="text-muted pull-right"><i
+                    class="fa fa-clock-o"></i>{{this.convo.createdTime|date:'medium'}}</small>
+                {{this.convo.SentByName}}
+              </a>
+              {{this.convo.Message}}
+            </p>
+            <div class="attachment" *ngIf="this.convo.files">
+              <h4>Attachments:</h4>
+
+              <p class="filename">
+                Theme-thumbnail-image.jpg
+              </p>
+
+              <div class="pull-right">
+                <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
+              </div>
+            </div>
+            <!-- /.attachment -->
+          </div>
+          <!-- /.item -->
+          <!-- chat item -->
+
+
         </div>
       </div>
 
@@ -52,8 +87,8 @@
           <li *ngFor="let chats of chatList">
             <div>
               <img class="contacts-list-img" src="{{this.dp_path}}" alt="User Avatar">
-              <div class="contacts-list-info chatreceiver_{{this.chats.chat_receiver_id}}" (click)="getConvo(chats.chatId)"
-                id="{{this.chats.chatId}}">
+              <div class="contacts-list-info chatreceiver_{{this.chats.chat_receiver_id}}"
+                (click)="getConvo(chats.chatId)" id="{{this.chats.chatId}}">
                 <span class="contacts-list-name">
                   {{this.chats.name}}
                   <small class="contacts-list-date float-right">{{this.chats.time | date:'medium'}}</small>
@@ -70,20 +105,59 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
-      <form action="#" method="post">
         <div class="input-group">
+          <span class="input-group-append">
+            <span class="input-group-text">
+              <i type="button" class="fa fa-smile-o" [popover]="popTemplate" [placement]="'top'" [container]="'body'"
+                [outsideClick]="true">
+                :)
+              </i>
+            </span>
+
+
+          </span>
           <input type="text" name="message" placeholder="Type Message ..." class="form-control"
             [(ngModel)]="this.chatBoxinput" />
-          <span class="input-group-append">
-            <span class="input-group-text"></span>
 
-            <button type="button" class="btn btn-warning" (click)="sendmsg()" >Send</button>
-          </span>
+          <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
         </div>
-      </form>
+
+
+      <!-- <video #remoteVideo playsinline autoplay muted></video> -->
+      <!-- <div>
+        <button #callButton [disabled]="callButtonDisabled" (click)="call()">Call</button>
+
+      </div> -->
     </div>
     <!-- /.card-footer-->
   </div>
   <!--/.direct-chat -->
 </div>
 
+<div class="modal fade" id="modal-default" style="display: none;" aria-modal="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Video Call</h4>
+        <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <video #localVideo playsinline autoplay muted style="display:none"></video> 
+        <video #remoteVideo playsinline autoplay muted style="width: -webkit-fill-available"></video>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button #hangupButton [disabled]="hangupButtonDisabled" (click)="hangup()">Hang Up</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<ng-template #popTemplate>
+  <emoji-mart (emojiClick)="addemoji($event)" [showPreview]='false'
+    [style]="{ position: 'inherit', bottom: '20px', right: '20px',margin: '-13px' ,padding: '0 0 15px 0' }"></emoji-mart>
+</ng-template>

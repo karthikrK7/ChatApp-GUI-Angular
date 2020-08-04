@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA } from '@angular/core';
 import { MyInterceptor } from '../app/utils/Interceptor'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { FileboxComponent } from './components/filebox/filebox.component';
-//import { ChatvideoComponent } from './chatvideo/chatvideo.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import * as $ from "jquery";
 
 @NgModule({
@@ -35,9 +36,14 @@ import * as $ from "jquery";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PickerModule,
+    PopoverModule.forRoot()
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA
+  ]
 })
 export class AppModule { }
