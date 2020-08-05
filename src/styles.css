@@ -98,3 +98,15 @@
     width: 100%;
     height: 93vh;
 }
+.cursor-pointer{
+    cursor:pointer;
+}
+.endcall{
+    cursor:pointer;
+    color:red;
+}
+@media only screen and (max-width: 728px) {
+    .chat-body {
+      height:75vh!important;
+    }
+  }

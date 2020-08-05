@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef ,ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ChatappService } from '../../services/chatapp.service';
 import { CommonutilsService } from '../../services/commonutils.service';
 import { Router } from '@angular/router';
@@ -34,7 +34,8 @@ export class ChatboxComponent implements OnInit {
   user_Id = sessionStorage.getItem('user_Id');
   payload = {
     text: this.chatBoxinput, sender_id: '', receiver_id: '',
-    chat_id: '', msg_Type: '', groupChatId: '', singleChatId: ''
+    chat_id: '', msg_Type: '', groupChatId: '', singleChatId: '',
+    senderName:'',receiverName:''
   };
   pc1: any;
   pc2: any;
@@ -67,12 +68,12 @@ export class ChatboxComponent implements OnInit {
 
   public stompClient;
   public msg = [];
-  
+
   ngOnInit() {
     this.access_token = sessionStorage.getItem('access_token');
     this.dp_path = "assets/img/" + sessionStorage.getItem('dp_path');
     this.currentUser_id = sessionStorage.getItem('user_id');
-    this.LoadData(); 
+    this.LoadData();
   }
 
   LoadData() {
@@ -94,8 +95,11 @@ export class ChatboxComponent implements OnInit {
     this.chatAppService.getConversation(this.access_token, chat_id).subscribe(
       response => {
         this.conversations = response;
+        this.payload.senderName = this.conversations.Conversation.senderName;
+        this.payload.receiverName = this.conversations.Conversation.receiverName;
         this.receiver = this.conversations.Conversation.Receiver;
         this.conversations = this.conversations.Conversation.chats;
+       
         $(".direct-chat").removeClass("direct-chat-contacts-open");
       });
     $(".card-title").html(chat_id.name);
@@ -106,7 +110,7 @@ export class ChatboxComponent implements OnInit {
 
 
   sendmsg() {
-    console.log(this.payload)
+    console.log("cnchjgvj "+this.payload)
     this.payload.text = this.chatBoxinput;
     this.stompClient.send('/app/send/message', {}, JSON.stringify(this.payload));
     this.chatBoxinput = "";
@@ -125,42 +129,27 @@ export class ChatboxComponent implements OnInit {
         if (message.body) {
           console.log(message.body)
           //{"text":"hey h r u","sender_id":1,"receiver_id":2,"chat_id":1,"msg_Type":0,"groupChatId":"","singleChatId":""}
-
           var resultJSON = JSON.parse(message.body);
-          var div1, spandiv1, spandiv2;
-          if (resultJSON.SentBy == sessionStorage.getItem('user_id')) {
-            div1 = "direct-chat-msg right";
-            spandiv1 = "float-right";
-            spandiv2 = "float-left";
-          } else {
-            div1 = "direct-chat-msg";
-            spandiv1 = "float-left";
-            spandiv2 = "float-right";
-          }
-
-
+          this.receiver = resultJSON.receiver_id;
 
           var chatthread = '<div class="box-body chat" id="chat-box"><div class="item">';
-          chatthread += ' <img src="assets/img/'+ sessionStorage.getItem('dp_path') +'" alt="user image" class="online"/>';
-
+          chatthread += ' <img src="assets/img/' + sessionStorage.getItem('dp_path') + '" alt="user image" class="online"/>';
           chatthread += ' <p class="message">';
           chatthread += '   <a href="javascript:void(0)" class="name">';
           var dt = resultJSON.createdTime;
           const options = { year: 'numeric', month: 'short', day: 'numeric' };
           chatthread += '     <small class="text-muted pull-right"><i  class="fa fa-clock-o"></i>' + new Date(dt).toLocaleDateString('en-IN', options) + '</small>';
-          chatthread += resultJSON.SentByName +' </a> '+resultJSON.Message+'  </p>';
-          if(resultJSON.files){
+          chatthread += resultJSON.SentByName + ' </a> ' + resultJSON.Message + '  </p>';
+          if (resultJSON.files) {
             chatthread += ' <div class="attachment" *ngIf="this.convo.files">';
             chatthread += '   <h4>Attachments:</h4>';
-  
             chatthread += '  <p class="filename">   Theme-thumbnail-image.jpg </p>';
-  
             chatthread += '   <div class="pull-right">';
             chatthread += '      <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>';
             chatthread += '   </div>';
             chatthread += ' </div>';
           }
-            chatthread += '</div></div>';
+          chatthread += '</div></div>';
 
 
           // var chatthread = ' <div class="' + div1 + '"><div class="direct-chat-infos clearfix">';
@@ -182,6 +171,13 @@ export class ChatboxComponent implements OnInit {
         }
         $(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
       });
+
+      that.stompClient.subscribe('/typing', (message) => {
+        console.log(sessionStorage.getItem('user_Id')+"  "+JSON.parse(message.body).sender_id)
+        if(sessionStorage.getItem('user_id')!=JSON.parse(message.body).sender_id){
+          $("#typing").html(JSON.parse(message.body).senderName+' is typing...').fadeIn(500).fadeOut(10);
+        }
+      });
     });
   }
 
@@ -196,7 +192,22 @@ export class ChatboxComponent implements OnInit {
     setTimeout(value, 100);
   }
 
-  // webrtc
+
+  fileuploadinit() {
+    $("#chatbox-fileupload").trigger("click");
+  }
+
+  addemoji($event) {
+    this.chatBoxinput = this.chatBoxinput == undefined ? '' : this.chatBoxinput.trim();
+    this.chatBoxinput += $event.emoji.native;
+  }
+
+  typingEvent(event) {
+    this.stompClient.send('/app/send/typing', {}, JSON.stringify(this.payload));
+  }
+
+
+  // ****************** webrtc *************************
 
   getName(pc) {
     return (pc === this.pc1) ? 'pc1' : 'pc2';
@@ -221,12 +232,12 @@ export class ChatboxComponent implements OnInit {
       audio: false,
       video: true
     })
-    .then(this.gotStream.bind(this))
-    .catch(function(e) {
-      alert('getUserMedia() error: ' + e.name);
-    });
+      .then(this.gotStream.bind(this))
+      .catch(function (e) {
+        alert('getUserMedia() error: ' + e.name);
+      });
   }
-  
+
   call() {
     this.callButtonDisabled = true;
     this.hangupButtonDisabled = false;
@@ -350,16 +361,16 @@ export class ChatboxComponent implements OnInit {
 
   onIceCandidate(pc, event) {
     this.getOtherPc(pc).addIceCandidate(event.candidate)
-    .then(
-      () => {
-        this.onAddIceCandidateSuccess(pc);
-      },
-      (err) => {
-        this.onAddIceCandidateError(pc, err);
-      }
-    );
+      .then(
+        () => {
+          this.onAddIceCandidateSuccess(pc);
+        },
+        (err) => {
+          this.onAddIceCandidateError(pc, err);
+        }
+      );
     this.trace(this.getName(pc) + ' ICE candidate: \n' + (event.candidate ?
-        event.candidate.candidate : '(null)'));
+      event.candidate.candidate : '(null)'));
   }
 
   onAddIceCandidateSuccess(pc) {
@@ -396,8 +407,5 @@ export class ChatboxComponent implements OnInit {
     console.log(now + ': ', arg);
   }
 
-  addemoji($event){
-    this.chatBoxinput = this.chatBoxinput == undefined ? '' : this.chatBoxinput.trim();
-    this.chatBoxinput += $event.emoji.native;
-  }
+
 }

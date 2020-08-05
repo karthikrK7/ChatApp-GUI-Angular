@@ -17,6 +17,7 @@ import { FileboxComponent } from './components/filebox/filebox.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import * as $ from "jquery";
+import { VideoboxComponent } from './components/videobox/videobox.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import * as $ from "jquery";
     LoginComponent,
     ContactsComponent,
     FileboxComponent,
+    VideoboxComponent,
     //ChatvideoComponent,
   ],
   imports: [

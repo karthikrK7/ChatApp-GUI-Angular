@@ -13,20 +13,20 @@
         <!-- <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
           <i class="fas fa-comments"></i>
         </button> -->
-        <button type="button" class="btn btn-tool" title="Phone call">
+        <button type="button" class="btn btn-tool hide" title="Phone call">
           <i class="fa fa-phone" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn-tool" title="Video call" id="callvideo" data-toggle="modal"
           data-target="#modal-default" (click)="start();">
           <i class="fas fa-video" aria-hidden="true"></i>
         </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove">
+        <button type="button" class="btn btn-tool hide" data-card-widget="remove">
           <i class="fas fa-times"></i>
         </button>
       </div>
     </div>
     <!-- /.card-header -->
-    <div class="card-body">
+    <div class="card-body chat-body" style="height:100%">
       <!-- Conversations are loaded here -->
       <div id="preloader" class="hide">
         <div id="loader"></div>
@@ -81,7 +81,6 @@
         </div>
       </div>
 
-      <!-- Contacts are loaded here -->
       <div class="direct-chat-contacts height_75">
         <ul class="contacts-list">
           <li *ngFor="let chats of chatList">
@@ -99,26 +98,27 @@
 
           </li>
         </ul>
-        <!-- /.contacts-list -->
       </div>
       <!-- /.direct-chat-pane -->
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
+      <span id="typing"></span>
         <div class="input-group">
-          <span class="input-group-append">
-            <span class="input-group-text">
-              <i type="button" class="fa fa-smile-o" [popover]="popTemplate" [placement]="'top'" [container]="'body'"
-                [outsideClick]="true">
-                :)
-              </i>
-            </span>
-
-
-          </span>
           <input type="text" name="message" placeholder="Type Message ..." class="form-control"
-            [(ngModel)]="this.chatBoxinput" />
-
+            [(ngModel)]="this.chatBoxinput" (keypress)="typingEvent($event);"/>
+            <span class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-smile" [popover]="popTemplate" [placement]="'top'" [container]="'body'"
+                  [outsideClick]="true">
+                </i>
+                <span class="file-icon">
+                  <i class="fa fa-paperclip ml-2" (click)="fileuploadinit()"  style="cursor:pointer"></i>
+                  <input type="file" class="hide" id="chatbox-fileupload"> 
+                </span>
+              </span>
+  
+            </span>
           <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
         </div>
 
@@ -144,11 +144,14 @@
         </button>
       </div>
       <div class="modal-body">
-         <video #localVideo playsinline autoplay muted style="display:none"></video> 
-        <video #remoteVideo playsinline autoplay muted style="width: -webkit-fill-available"></video>
+         <video #localVideo playsinline autoplay muted ></video> 
+        <video #remoteVideo playsinline autoplay muted style="width: -webkit-fill-available">
+        </video>
       </div>
-      <div class="modal-footer justify-content-between">
-        <button #hangupButton [disabled]="hangupButtonDisabled" (click)="hangup()">Hang Up</button>
+      <div class="modal-footer justify-content-center endcall">
+        <span class="file-icon">
+          <img src="assets/img/icons8-end-call-50.png" #hangupButton [disabled]="hangupButtonDisabled" (click)="hangup()">
+        </span>
       </div>
     </div>
     <!-- /.modal-content -->
