@@ -1,106 +1,191 @@
-.popover{
-    min-width:fit-content;
+.popover {
+  min-width: fit-content;
 }
 
 .box {
-    position: relative;
-    border-radius: 3px;
-    background: #ffffff;
-    border-top: 3px solid #d2d6de;
-    margin-bottom: 20px;
-    width: 100%;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  position: relative;
+  border-radius: 3px;
+  background: #ffffff;
+  border-top: 3px solid #d2d6de;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .box.box-success {
-    border-top-color: #00a65a;
+  border-top-color: #00a65a;
 }
 
 .box-header {
-    color: #444;
-    display: block;
-    padding: 10px;
-    position: relative;
+  color: #444;
+  display: block;
+  padding: 10px;
+  position: relative;
 }
 
 .chat {
-    padding: 5px 20px 5px 10px;
+  padding: 5px 20px 5px 10px;
 }
 .box-body {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-    padding: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  padding: 10px;
 }
 
 .chat .item {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-.chat .item>.message {
-    margin-left: 55px;
-    margin-top: -40px;
+.chat .item > .message {
+  margin-left: 55px;
+  margin-top: -40px;
 }
 p {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 }
 
-.chat .item>.message>.name {
-    display: block;
-    font-weight: 600;
+.chat .item > .message > .name {
+  display: block;
+  font-weight: 600;
 }
 a {
-    color: #3c8dbc;
+  color: #3c8dbc;
 }
 a {
-    color: #337ab7;
-    text-decoration: none;
+  color: #337ab7;
+  text-decoration: none;
 }
 
 a {
-    background-color: transparent;
+  background-color: transparent;
 }
 
-.chat .item>.attachment {
-    border-radius: 3px;
-    background: #f4f4f4;
-    margin-left: 65px;
-    margin-right: 15px;
-    padding: 10px;
+.chat .item > .attachment {
+  border-radius: 3px;
+  background: #f4f4f4;
+  margin-left: 65px;
+  margin-right: 15px;
+  padding: 10px;
 }
 
-.chat .item>.attachment>p, .chat .item>.attachment>.filename {
-    font-weight: 600;
-    font-size: 13px;
-    font-style: italic;
-    margin: 0;
+.chat .item > .attachment > p,
+.chat .item > .attachment > .filename {
+  font-weight: 600;
+  font-size: 13px;
+  font-style: italic;
+  margin: 0;
 }
 
 .pull-right {
-    float: right!important;
+  float: right !important;
 }
 
-.chat .item>.offline {
-    border: 2px solid #dd4b39;
+.chat .item > .offline {
+  border: 2px solid #dd4b39;
 }
 
-.chat .item>img {
-    width: 40px;
-    height: 40px;
-    border: 2px solid transparent;
-    border-radius: 50%;
+.chat .item > img {
+  width: 40px;
+  height: 40px;
+  border: 2px solid transparent;
+  border-radius: 50%;
 }
 img {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 img {
-    border: 0;
+  border: 0;
 }
-.chat .item>.online {
-    border: 2px solid #00a65a;
+.chat .item > .online {
+  border: 2px solid #00a65a;
 }
-.card-comment-i{
-    float:left!important;
-    margin-right:5px;
+.card-comment-i {
+  float: left !important;
+  margin-right: 5px;
+}
+
+one video {
+  object-fit: cover;
+}
+.localVideo {
+  width: 20%;
+  position: absolute;
+  z-index: 2;
+  bottom: 10px;
+  left: 10px;
+  display: block;
+}
+.remoteVideos {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+.remoteVideos video {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0px;
+  min-height: 0px;
+}
+body {
+  background-color: black;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.locals {
+  position: absolute;
+  width: 300px;
+  left: 25px;
+  top: 25px;
+}
+
+.remotes {
+  width: -webkit-fill-available;
+  height: 78vh;
+}
+
+video {
+  object-fit: cover;
+}
+
+.main_control,
+.main_control_block {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.main_control_block {
+  width: 50%;
+  background: rgb(227 227 227 / 50%);
+  padding: 10px;
+  border-radius: 10px;
+}
+.main_control_block i {
+  font-size: 30px;
+}
+.video-modal-close {
+  position: absolute;
+  z-index: 1;
+  right: 25px;
+  top: 13px;
+  font-size: 30px;
+}
+#video-grid {
+  margin-bottom: -58px;
 }

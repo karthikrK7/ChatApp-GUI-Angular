@@ -110,3 +110,20 @@
       height:75vh!important;
     }
   }
+.width-webkit-fill{
+    width: -webkit-fill-available;
+}
+.padding-zero{
+    padding:0;
+}
+
+.video-small-grid{
+    width: 150px;
+    position: absolute;
+    top: 4%;
+    left: 3%;
+}
+.main_control{
+    position:inherit;
+    bottom:30px
+}

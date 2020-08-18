@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ChatappService {
 
-  messageSource : any;
+  messageSource: any;
   constructor(private http: HttpClient) {
     //this.initializeWebSocketConnection();
   }
@@ -24,12 +24,15 @@ export class ChatappService {
   getConversation(token: any, chat_id) {
     return this.http.post(appConfig.apiUrl + '/webapi/getConversation?+&access_token=' + token + '&chatId=' + chat_id, "");
   }
+  uploadDocument(token: any, formData, user_id) {
+    return this.http.post(appConfig.apiUrl + '/webapi/uploadDoc?access_token=' + token + '&userId=' + user_id, formData, {reportProgress: true,observe: 'events'});
+  }
 
   setReceiverObj(Obj: any) {
     this.messageSource = Obj;
   }
 
-  getReceiverObj(){
+  getReceiverObj() {
     return this.messageSource;
   }
 

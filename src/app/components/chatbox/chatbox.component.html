@@ -16,8 +16,8 @@
         <button type="button" class="btn btn-tool hide" title="Phone call">
           <i class="fa fa-phone" aria-hidden="true"></i>
         </button>
-        <button type="button" class="btn btn-tool" title="Video call" id="callvideo" data-toggle="modal"
-          data-target="#modal-default" (click)="start();">
+        <button type="button" class="btn btn-tool" title="Video call" id="callvideo" data-backdrop="static"
+          data-keyboard="false" data-toggle="modal" data-target="#modal-default">
           <i class="fas fa-video" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn-tool hide" data-card-widget="remove">
@@ -104,23 +104,23 @@
     <!-- /.card-body -->
     <div class="card-footer">
       <span id="typing"></span>
-        <div class="input-group">
-          <input type="text" name="message" placeholder="Type Message ..." class="form-control"
-            [(ngModel)]="this.chatBoxinput" (keypress)="typingEvent($event);"/>
-            <span class="input-group-append">
-              <span class="input-group-text">
-                <i class="fa fa-smile" [popover]="popTemplate" [placement]="'top'" [container]="'body'"
-                  [outsideClick]="true">
-                </i>
-                <span class="file-icon">
-                  <i class="fa fa-paperclip ml-2" (click)="fileuploadinit()"  style="cursor:pointer"></i>
-                  <input type="file" class="hide" id="chatbox-fileupload"> 
-                </span>
-              </span>
-  
+      <div class="input-group">
+        <input type="text" name="message" placeholder="Type Message ..." class="form-control"
+          [(ngModel)]="this.chatBoxinput" (keypress)="typingEvent($event);" />
+        <span class="input-group-append">
+          <span class="input-group-text">
+            <i class="fa fa-smile" [popover]="popTemplate" [placement]="'top'" [container]="'body'"
+              [outsideClick]="true">
+            </i>
+            <span class="file-icon">
+              <i class="fa fa-paperclip ml-2" (click)="fileuploadinit()" style="cursor:pointer"></i>
+              <input type="file" class="hide" id="chatbox-fileupload">
             </span>
-          <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
-        </div>
+          </span>
+
+        </span>
+        <button type="button" class="btn btn-warning" (click)="sendmsg()">Send</button>
+      </div>
 
 
       <!-- <video #remoteVideo playsinline autoplay muted></video> -->
@@ -135,32 +135,62 @@
 </div>
 
 <div class="modal fade" id="modal-default" style="display: none;" aria-modal="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <h4 class="modal-title">Video Call</h4>
         <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
+      </div> -->
+      <div class="modal-body padding-zero">
+        <div class="ml-5 pull-right video-modal-close" data-dismiss="modal">
+          <i class="fa fa-times"></i>
+        </div>
+        <!-- <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button> -->
+        <!-- <video id="localVideo" playsinline autoplay muted></video>
+        <video id="remoteVideo" playsinline autoplay></video>
+     -->
+        <div id="video-grid">
+          <video class='locals' id="local"></video>
+          <video class='remotes' id="remote"></video>
+        </div>
+        <div class="main_control">
+          <div class="main_control_block">
+            <div class="mute ml-5">
+              <i class="fa fa-microphone"></i>
+            </div>
+            <div class="stopvideo ml-5">
+              <i class="fa fa-video"></i>
+            </div>
+            <div class="close ml-5 endcall">
+              <i class="fas fa-times-circle"></i>
+            </div>
+          </div>
+        </div>
+        <!-- <video id="localVideo" playsinline autoplay muted></video> -->
+        <!-- <div class="remoteVideos"></div> -->
+
+        <!-- <div class="box">
+            <button id="startButton" >Start</button>
+            <button id="callButton">Call</button>
+            <button id="hangupButton">Hang Up</button>
+        </div> -->
       </div>
-      <div class="modal-body">
-         <video #localVideo playsinline autoplay muted ></video> 
-        <video #remoteVideo playsinline autoplay muted style="width: -webkit-fill-available">
-        </video>
-      </div>
-      <div class="modal-footer justify-content-center endcall">
-        <span class="file-icon">
-          <img src="assets/img/icons8-end-call-50.png" #hangupButton [disabled]="hangupButtonDisabled" (click)="hangup()">
-        </span>
-      </div>
+      <!-- <div class="modal-footer justify-content-center">
+       
+      </div> -->
     </div>
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
 </div>
 
-
+<input type="hidden" id="hiddenVal">
 <ng-template #popTemplate>
   <emoji-mart (emojiClick)="addemoji($event)" [showPreview]='false'
-    [style]="{ position: 'inherit', bottom: '20px', right: '20px',margin: '-13px' ,padding: '0 0 15px 0' }"></emoji-mart>
+    [style]="{ position: 'inherit', bottom: '20px', right: '20px',margin: '-13px' ,padding: '0 0 15px 0' }">
+  </emoji-mart>
 </ng-template>
